@@ -24,7 +24,7 @@ public class DepartmentDAO {
 	}
 	
 	public Department findById(int id) throws SQLException{		
-		try(Connection conn, PreparedStatement stmt, ResultSet rs){
+		try(Connection conn = null; PreparedStatement stmt= null; ResultSet rs = null){
 			conn = ConnectionDAO.getInstance().getConnection();
 			stmt = conn.prepareStatement(
 				"SELECT department.*, campus.name AS campusName " +
@@ -46,7 +46,7 @@ public class DepartmentDAO {
 	}
 	
 	public List<Department> listAll(boolean onlyActive) throws SQLException{		
-		try(Connection conn, PreparedStatement stmt, ResultSet rs){
+		try(Connection conn = null; PreparedStatement stmt= null; ResultSet rs = null){
 			conn = ConnectionDAO.getInstance().getConnection();
 			stmt = conn.createStatement();
 		
@@ -71,7 +71,7 @@ public class DepartmentDAO {
 		Statement stmt = null;
 		ResultSet rs = null;
 		
-		try(Connection conn, PreparedStatement stmt, ResultSet rs){
+		try(Connection conn = null; PreparedStatement stmt= null; ResultSet rs = null){
 			conn = ConnectionDAO.getInstance().getConnection();
 			stmt = conn.createStatement();
 		
@@ -91,9 +91,8 @@ public class DepartmentDAO {
 		}
 	}
 	
-	public int save(int idUser, Department department) throws SQLException{
-		boolean insert = (department.getIdDepartment() == 0);		
-		try(Connection conn, PreparedStatement stmt, ResultSet rs){
+	public int save(int idUser, Department department) throws SQLException{		
+		try(Connection conn = null; PreparedStatement stmt= null; ResultSet rs = null, boolean insert = (department.getIdDepartment() == 0)){
 			conn = ConnectionDAO.getInstance().getConnection();
 			
 			if(insert){
