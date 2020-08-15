@@ -14,12 +14,17 @@ import br.edu.utfpr.dv.siacoes.model.Department;
 
 public class DepartmentDAO {
 
-	public Department findById(int id) throws SQLException{
-		Connection conn = null;
-		PreparedStatement stmt = null;
-		ResultSet rs = null;
-		
-		try{
+	public void closeConn(Connection conn, PreparedStatement stmt, ResultSet rs){
+	    if((rs != null) && !rs.isClosed())
+			rs.close();
+	    if((stmt != null) && !stmt.isClosed())
+			stmt.close();
+	    if((conn != null) && !conn.isClosed())
+			conn.close();
+	}
+	
+	public Department findById(int id) throws SQLException{		
+		try(Connection conn, PreparedStatement stmt, ResultSet rs){
 			conn = ConnectionDAO.getInstance().getConnection();
 			stmt = conn.prepareStatement(
 				"SELECT department.*, campus.name AS campusName " +
@@ -36,21 +41,12 @@ public class DepartmentDAO {
 				return null;
 			}
 		}finally{
-			if((rs != null) && !rs.isClosed())
-				rs.close();
-			if((stmt != null) && !stmt.isClosed())
-				stmt.close();
-			if((conn != null) && !conn.isClosed())
-				conn.close();
+			closeConn(conn,stmt,rs);
 		}
 	}
 	
-	public List<Department> listAll(boolean onlyActive) throws SQLException{
-		Connection conn = null;
-		Statement stmt = null;
-		ResultSet rs = null;
-		
-		try{
+	public List<Department> listAll(boolean onlyActive) throws SQLException{		
+		try(Connection conn, PreparedStatement stmt, ResultSet rs){
 			conn = ConnectionDAO.getInstance().getConnection();
 			stmt = conn.createStatement();
 		
@@ -66,12 +62,7 @@ public class DepartmentDAO {
 			
 			return list;
 		}finally{
-			if((rs != null) && !rs.isClosed())
-				rs.close();
-			if((stmt != null) && !stmt.isClosed())
-				stmt.close();
-			if((conn != null) && !conn.isClosed())
-				conn.close();
+			closeConn(conn,stmt,rs);
 		}
 	}
 	
@@ -80,7 +71,7 @@ public class DepartmentDAO {
 		Statement stmt = null;
 		ResultSet rs = null;
 		
-		try{
+		try(Connection conn, PreparedStatement stmt, ResultSet rs){
 			conn = ConnectionDAO.getInstance().getConnection();
 			stmt = conn.createStatement();
 		
@@ -96,22 +87,13 @@ public class DepartmentDAO {
 			
 			return list;
 		}finally{
-			if((rs != null) && !rs.isClosed())
-				rs.close();
-			if((stmt != null) && !stmt.isClosed())
-				stmt.close();
-			if((conn != null) && !conn.isClosed())
-				conn.close();
+			closeConn(conn,stmt,rs);
 		}
 	}
 	
 	public int save(int idUser, Department department) throws SQLException{
-		boolean insert = (department.getIdDepartment() == 0);
-		Connection conn = null;
-		PreparedStatement stmt = null;
-		ResultSet rs = null;
-		
-		try{
+		boolean insert = (department.getIdDepartment() == 0);		
+		try(Connection conn, PreparedStatement stmt, ResultSet rs){
 			conn = ConnectionDAO.getInstance().getConnection();
 			
 			if(insert){
@@ -152,12 +134,7 @@ public class DepartmentDAO {
 			
 			return department.getIdDepartment();
 		}finally{
-			if((rs != null) && !rs.isClosed())
-				rs.close();
-			if((stmt != null) && !stmt.isClosed())
-				stmt.close();
-			if((conn != null) && !conn.isClosed())
-				conn.close();
+			closeConn(conn,stmt,rs);
 		}
 	}
 	
