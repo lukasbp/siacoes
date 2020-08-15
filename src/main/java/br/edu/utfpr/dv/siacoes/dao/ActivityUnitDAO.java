@@ -12,13 +12,17 @@ import br.edu.utfpr.dv.siacoes.log.UpdateEvent;
 import br.edu.utfpr.dv.siacoes.model.ActivityUnit;
 
 public class ActivityUnitDAO {
-	
-	public List<ActivityUnit> listAll() throws SQLException{
-		Connection conn = null;
-		Statement stmt = null;
-		ResultSet rs = null;
-		
-		try{
+	public void closeConn(Connection conn, PreparedStatement stmt, ResultSet rs){
+	    if((rs != null) && !rs.isClosed())
+			rs.close();
+	    if((stmt != null) && !stmt.isClosed())
+			stmt.close();
+	    if((conn != null) && !conn.isClosed())
+			conn.close();
+	}
+
+	public List<ActivityUnit> listAll() throws SQLException{		
+		try(Connection conn = null; Statement stmt = null; ResultSet rs = null){
 			conn = ConnectionDAO.getInstance().getConnection();
 			stmt = conn.createStatement();
 		
@@ -32,21 +36,12 @@ public class ActivityUnitDAO {
 			
 			return list;
 		}finally{
-			if((rs != null) && !rs.isClosed())
-				rs.close();
-			if((stmt != null) && !stmt.isClosed())
-				stmt.close();
-			if((conn != null) && !conn.isClosed())
-				conn.close();
+			closeConn(conn,stmt,rs);
 		}
 	}
 	
 	public ActivityUnit findById(int id) throws SQLException{
-		Connection conn = null;
-		PreparedStatement stmt = null;
-		ResultSet rs = null;
-		
-		try{
+		try(Connection conn = null; Statement stmt = null; ResultSet rs = null){
 			conn = ConnectionDAO.getInstance().getConnection();
 			stmt = conn.prepareStatement("SELECT * FROM activityunit WHERE idActivityUnit=?");
 		
@@ -60,22 +55,12 @@ public class ActivityUnitDAO {
 				return null;
 			}
 		}finally{
-			if((rs != null) && !rs.isClosed())
-				rs.close();
-			if((stmt != null) && !stmt.isClosed())
-				stmt.close();
-			if((conn != null) && !conn.isClosed())
-				conn.close();
+			closeConn(conn,stmt,rs);
 		}
 	}
 	
-	public int save(int idUser, ActivityUnit unit) throws SQLException{
-		boolean insert = (unit.getIdActivityUnit() == 0);
-		Connection conn = null;
-		PreparedStatement stmt = null;
-		ResultSet rs = null;
-		
-		try{
+	public int save(int idUser, ActivityUnit unit) throws SQLException{		
+		try(Connection conn = null; Statement stmt = null; ResultSet rs = null; boolean insert = (unit.getIdActivityUnit() == 0)){
 			conn = ConnectionDAO.getInstance().getConnection();
 			
 			if(insert){
@@ -108,12 +93,7 @@ public class ActivityUnitDAO {
 			
 			return unit.getIdActivityUnit();
 		}finally{
-			if((rs != null) && !rs.isClosed())
-				rs.close();
-			if((stmt != null) && !stmt.isClosed())
-				stmt.close();
-			if((conn != null) && !conn.isClosed())
-				conn.close();
+			closeConn(conn,stmt,rs);
 		}
 	}
 	
