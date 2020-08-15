@@ -15,13 +15,17 @@ import br.edu.utfpr.dv.siacoes.model.Module;
 import br.edu.utfpr.dv.siacoes.model.User;
 
 public class BugReportDAO {
+	public void closeConn(Connection conn, PreparedStatement stmt, ResultSet rs){
+	    if((rs != null) && !rs.isClosed())
+			rs.close();
+	    if((stmt != null) && !stmt.isClosed())
+			stmt.close();
+	    if((conn != null) && !conn.isClosed())
+			conn.close();
+	}
 	
-	public BugReport findById(int id) throws SQLException{
-		Connection conn = null;
-		PreparedStatement stmt = null;
-		ResultSet rs = null;
-		
-		try{
+	public BugReport findById(int id) throws SQLException{		
+		try(Connection conn = null; PreparedStatement stmt = null; ResultSet rs = null){
 			conn = ConnectionDAO.getInstance().getConnection();
 			stmt = conn.prepareStatement("SELECT bugreport.*, \"user\".name " + 
 				"FROM bugreport INNER JOIN \"user\" ON \"user\".idUser=bugreport.idUser " +
@@ -37,21 +41,12 @@ public class BugReportDAO {
 				return null;
 			}
 		}finally{
-			if((rs != null) && !rs.isClosed())
-				rs.close();
-			if((stmt != null) && !stmt.isClosed())
-				stmt.close();
-			if((conn != null) && !conn.isClosed())
-				conn.close();
+			closeConn(conn,stmt,rs);
 		}
 	}
 	
-	public List<BugReport> listAll() throws SQLException{
-		Connection conn = null;
-		Statement stmt = null;
-		ResultSet rs = null;
-		
-		try{
+	public List<BugReport> listAll() throws SQLException{		
+		try(Connection conn = null; PreparedStatement stmt = null; ResultSet rs = null){
 			conn = ConnectionDAO.getInstance().getConnection();
 			stmt = conn.createStatement();
 			
@@ -66,12 +61,7 @@ public class BugReportDAO {
 			
 			return list;
 		}finally{
-			if((rs != null) && !rs.isClosed())
-				rs.close();
-			if((stmt != null) && !stmt.isClosed())
-				stmt.close();
-			if((conn != null) && !conn.isClosed())
-				conn.close();
+			closeConn(conn,stmt,rs);
 		}
 	}
 	
@@ -81,7 +71,7 @@ public class BugReportDAO {
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
 		
-		try{
+		try(Connection conn = null; PreparedStatement stmt = null; ResultSet rs = null; boolean insert = (bug.getIdBugReport() == 0)){
 			conn = ConnectionDAO.getInstance().getConnection();
 			
 			if(insert){
@@ -120,12 +110,7 @@ public class BugReportDAO {
 			
 			return bug.getIdBugReport();
 		}finally{
-			if((rs != null) && !rs.isClosed())
-				rs.close();
-			if((stmt != null) && !stmt.isClosed())
-				stmt.close();
-			if((conn != null) && !conn.isClosed())
-				conn.close();
+			closeConn(conn,stmt,rs);
 		}
 	}
 	
