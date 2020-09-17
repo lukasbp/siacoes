@@ -32,7 +32,7 @@ public class BugReportDAO extends TemplateMethod{
 	}
 
 	@Override
-	List<ActivityUnit> listAll(boolean onlyActive) throws SQLException {
+	List<BugReport> listAllBug(boolean onlyActive) throws SQLException {
 		try(Connection conn = null; PreparedStatement stmt = null; ResultSet rs = null){
 			conn = ConnectionDAO.getInstance().getConnection();
 			stmt = (PreparedStatement) conn.createStatement();
@@ -51,7 +51,7 @@ public class BugReportDAO extends TemplateMethod{
 			closeConn(conn,stmt,rs);
 		}
 	}
-	
+
 	@Override
 	int save(int idUser, Department department) throws SQLException {
 		boolean insert = (bug.getIdBugReport() == 0);
@@ -101,7 +101,7 @@ public class BugReportDAO extends TemplateMethod{
 			closeConn(conn,stmt,rs);
 		}
 	}
-	
+
 	
 	private BugReport loadObject(ResultSet rs) throws SQLException{
 		BugReport bug = new BugReport();
