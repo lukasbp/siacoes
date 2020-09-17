@@ -9,8 +9,11 @@ class DepartmentTest {
     @Test
     void getIdDepartment() {
         Department d = new Department();
-        d.setIdDepartment(0);
-        assertEquals(0, d.getIdDepartment());
+        
+        department.setName("Teste");
+        String name = department.getName();
+
+        assertEquals("Teste", name);
     }
 
 
