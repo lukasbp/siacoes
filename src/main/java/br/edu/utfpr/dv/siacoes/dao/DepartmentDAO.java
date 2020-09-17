@@ -1,40 +1,28 @@
 package br.edu.utfpr.dv.siacoes.dao;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.sql.Types;
+import br.edu.utfpr.dv.siacoes.log.UpdateEvent;
+import br.edu.utfpr.dv.siacoes.model.BugReport;
+import br.edu.utfpr.dv.siacoes.model.Department;
+
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import br.edu.utfpr.dv.siacoes.log.UpdateEvent;
-import br.edu.utfpr.dv.siacoes.model.Department;
+public class DepartmentDAO extends TemplateMethod {
 
-public class DepartmentDAO {
-
-	public void closeConn(Connection conn, PreparedStatement stmt, ResultSet rs){
-	    if((rs != null) && !rs.isClosed())
-			rs.close();
-	    if((stmt != null) && !stmt.isClosed())
-			stmt.close();
-	    if((conn != null) && !conn.isClosed())
-			conn.close();
-	}
-	
-	public Department findById(int id) throws SQLException{		
+	@Override
+	Department findByIdDepartment(int id, String dbSYntax) throws SQLException {
 		try(Connection conn = null; PreparedStatement stmt= null; ResultSet rs = null){
 			conn = ConnectionDAO.getInstance().getConnection();
 			stmt = conn.prepareStatement(
-				"SELECT department.*, campus.name AS campusName " +
-				"FROM department INNER JOIN campus ON campus.idCampus=department.idCampus " +
-				"WHERE idDepartment = ?");
-		
+					"SELECT department.*, campus.name AS campusName " +
+							"FROM department INNER JOIN campus ON campus.idCampus=department.idCampus " +
+							"WHERE idDepartment = ?");
+
 			stmt.setInt(1, id);
-			
+
 			rs = stmt.executeQuery();
-			
+
 			if(rs.next()){
 				return this.loadObject(rs);
 			}else{
@@ -44,8 +32,10 @@ public class DepartmentDAO {
 			closeConn(conn,stmt,rs);
 		}
 	}
+
 	
-	public List<Department> listAll(boolean onlyActive) throws SQLException{		
+	@Override
+	List<Department> listAllDepartment(boolean onlyActive) throws SQLException{
 		try(Connection conn = null; PreparedStatement stmt= null; ResultSet rs = null){
 			conn = ConnectionDAO.getInstance().getConnection();
 			stmt = conn.createStatement();
@@ -65,8 +55,8 @@ public class DepartmentDAO {
 			closeConn(conn,stmt,rs);
 		}
 	}
-	
-	public List<Department> listByCampus(int idCampus, boolean onlyActive) throws SQLException{
+	@Override
+	List<Department> listByCampus(int idCampus, boolean onlyActive) throws SQLException{
 		Connection conn = null;
 		Statement stmt = null;
 		ResultSet rs = null;
@@ -90,8 +80,8 @@ public class DepartmentDAO {
 			closeConn(conn,stmt,rs);
 		}
 	}
-	
-	public int save(int idUser, Department department) throws SQLException{		
+	@Override
+	int save(int idUser, Department department) throws SQLException{		
 		try(Connection conn = null; PreparedStatement stmt= null; ResultSet rs = null, boolean insert = (department.getIdDepartment() == 0)){
 			conn = ConnectionDAO.getInstance().getConnection();
 			
