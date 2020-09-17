@@ -7,11 +7,11 @@ import static org.junit.jupiter.api.Assertions.*;
 class DepartmentTest {
 
     @Test
-    void getIdDepartment() {
+    void TestDepartment() {
         Department d = new Department();
         
-        department.setName("Teste");
-        String name = department.getName();
+        d.setName("Teste");
+        String name = d.getName();
 
         assertEquals("Teste", name);
     }
