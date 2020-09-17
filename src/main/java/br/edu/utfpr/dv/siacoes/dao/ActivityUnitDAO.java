@@ -31,7 +31,7 @@ class ActivityUnitDAO extends TemplateMethod {
 	}
 
 	@Override
-	List<ActivityUnit> listAll(boolean onlyActive) throws SQLException {
+	List<ActivityUnit> listAllActivity(boolean onlyActive) throws SQLException {
 		try(Connection conn = null; Statement stmt = null; ResultSet rs = null){
 			conn = ConnectionDAO.getInstance().getConnection();
 			stmt = conn.createStatement();
