@@ -10,14 +10,6 @@ import java.util.List;
 
 public abstract class TemplateMethod {
 
-  final void actions() throws SQLException {
-        closeConn(Connection conn, PreparedStatement stmt, ResultSet rs);
-        findById(int id);
-        listAll(boolean onlyActive);
-        save(int idUser, Department department);
-        loadObject(ResultSet rs);
-  }
-
    final void closeConn(Connection conn, PreparedStatement stmt, ResultSet rs) throws SQLException{
         if((rs != null) && !rs.isClosed())
             rs.close();
