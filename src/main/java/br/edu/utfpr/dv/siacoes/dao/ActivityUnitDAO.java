@@ -11,7 +11,7 @@ import java.util.List;
 class ActivityUnitDAO extends TemplateMethod {
 
 	@Override
-	ActivityUnit findById(int id, String dbSYntax) throws SQLException {
+	ActivityUnit findByIdActivity(int id, String dbSYntax) throws SQLException {
 		try(Connection conn, Statement stmt, ResultSet rs ){
 			conn = ConnectionDAO.getInstance().getConnection();
 			stmt = conn.prepareStatement("SELECT * FROM activityunit WHERE idActivityUnit=?");
@@ -89,7 +89,7 @@ class ActivityUnitDAO extends TemplateMethod {
 			closeConn(conn,stmt,rs);
 		}
 	}
-	@Override
+
 	public ActivityUnit loadObject(ResultSet rs) throws SQLException{
 		ActivityUnit unit = new ActivityUnit();
 		
