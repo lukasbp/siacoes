@@ -7,7 +7,7 @@ import br.edu.utfpr.dv.siacoes.model.Department;
 import java.sql.*;
 import java.util.List;
 
-
+//f
 public abstract class TemplateMethod {
 
    final void closeConn(Connection conn, PreparedStatement stmt, ResultSet rs) throws SQLException{
