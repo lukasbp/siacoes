@@ -9,7 +9,7 @@ import java.util.List;
 
 public abstract class TemplateMethod {
 
-  public abstratct void actions(){
+  public abstract void actions(){
         closeConn(Connection conn, PreparedStatement stmt, ResultSet rs);
         findById(int id);
         listAll(boolean onlyActive);
@@ -17,7 +17,7 @@ public abstract class TemplateMethod {
         loadObject(ResultSet rs);
   }
     
-  public abstratct void closeConn(Connection conn, PreparedStatement stmt, ResultSet rs){
+  public abstract void closeConn(Connection conn, PreparedStatement stmt, ResultSet rs){
         if((rs != null) && !rs.isClosed())
             rs.close();
         if((stmt != null) && !stmt.isClosed())
@@ -26,14 +26,14 @@ public abstract class TemplateMethod {
             conn.close();
   }
 
-  public abstratct Department findById(int id, String dbSYntax) throws SQLException;
+  public abstract Department findById(int id, String dbSYntax) throws SQLException;
 
-  public  abstratct List<Department> listAll(boolean onlyActive) throws SQLException;
+  public  abstract List<Department> listAll(boolean onlyActive) throws SQLException;
 
-  public abstratct List<Department> listByCampus(int idCampus, boolean onlyActive) throws SQLException;
+  public abstract List<Department> listByCampus(int idCampus, boolean onlyActive) throws SQLException;
 
-  public abstratct int save(int idUser, Department department) throws SQLException;
+  public abstract int save(int idUser, Department department) throws SQLException;
 
-  private abstratct loadObject(ResultSet rs) throws SQLException;
+  private abstract loadObject(ResultSet rs) throws SQLException;
   
 }
